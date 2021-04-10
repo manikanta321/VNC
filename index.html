@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact form</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- <script type="text/javascript" src="js/bootstrap.js"></script>
+     <script type="text/javascript"/> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <style>
+      html, body {
+      min-height: 100%;
+      padding: 0;
+      margin: 0;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      }
+      h1 {
+      margin: 0 0 20px;
+      font-weight: 400;
+      color: #1c87c9;
+      }
+      p {
+      margin: 0 0 5px;
+      }
+      .main-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #1c87c9;
+      }
+      form {
+      padding: 25px;
+      margin: 25px;
+      box-shadow: 0 2px 5px #f5f5f5; 
+      background: #f5f5f5; 
+      }
+      .fas {
+      margin: 25px 10px 0;
+      font-size: 72px;
+      color: #fff;
+      }
+      .fa-envelope {
+      transform: rotate(-20deg);
+      }
+      .fa-at , .fa-mail-bulk{
+      transform: rotate(10deg);
+      }
+      input, textarea {
+      width: calc(100% - 18px);
+      padding: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #1c87c9;
+      outline: none;
+      }
+      input::placeholder {
+      color: #666;
+      }
+      button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #1c87c9; 
+      font-size: 16px;
+      font-weight: 400;
+      color: #fff;
+      }
+      button:hover {
+      background: #2371a0;
+      }    
+      @media (min-width: 568px) {
+      .main-block {
+      flex-direction: row;
+      }
+      .left-part, form {
+      width: 50%;
+      }
+      .fa-envelope {
+      margin-top: 0;
+      margin-left: 20%;
+      }
+      .fa-at {
+      margin-top: -10%;
+      margin-left: 65%;
+      }
+      .fa-mail-bulk {
+      margin-top: 2%;
+      margin-left: 28%;
+      }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="main-block">
+      <div class="left-part">
+        <i class="fas fa-envelope"></i>
+        <i class="fas fa-at"></i>
+        <i class="fas fa-mail-bulk"></i>
+      </div>
+      <form id = "submitResume">
+        <h1>VNC </h1>
+        <div class="info">
+            <div>
+                <label>First Name:</label>
+                <input class="fname" type="text" name="name" placeholder="First name" id="resu_1" required>
+            </div>
+          <div>
+            <label>Last Name:</label>
+            <input type="text" name="name" placeholder="Last name" id="resu_2" required>
+          </div>     
+           <br>    
+            <div>
+                <label>PAN no:</label>
+                <input type="text" name="name" placeholder="Pan Card " class="field" id="panCard" required pattern="[a-zA-Z0-9]+" />
+                <label id="panError"></label>
+            </div>
+            <br> <br>
+          <div>
+            <label>Phone no:</label>
+            <!-- <input type="tel" name="name" placeholder="Number" id="number"   required> -->
+            <input type="text" name="name" placeholder="Number" id="number" title="Error Message" pattern="[1-9]{1}[0-9]{9}" required>
+            <label id="phError"></label>
+            
+          </div>
+          <br>
+          <div>
+            <label>Current CTC:</label>
+            <input type="number" name="name" placeholder="Current CTC"  pattern="[0-9]{10}" id="resu_3" required>
+          </div>
+          <div>
+            <label>Accepted CT:</label>
+            <input type="number" name="name" placeholder="Accepted CTC"  pattern="[0-9]{10}" id="resu_4" required>
+          </div>
+          <div>
+            <label>Notice period:</label>
+            <input type="number" name="name" placeholder="Notice period"  pattern="[0-9]{10}" id="resu_5" required>
+          </div>     
+          <div>
+            <label>upload resume:</label>
+            <input type="file" name="fileToUpload" id="fileToUpload" onclick="ResumeSubmission.uploadResume(event)" accept=".pdf, .doc">
+            <label id="fileUpError"></label>
+        </div> 
+      
+        <button type="submit" id="submitResume"  onclick="ResumeSubmission.errorMessage()">Submit</button>
+      </form>
+     
+
+      <script type="text/javascript">
+          
+          var ResumeSubmission={
+              //declaring errorMessage function with in SubmitValidation variable to avoid errorMessage in air
+            errorMessage : function(){
+            let phoneError = document.getElementById("phError");
+            let panError = document.getElementById("panError");
+            let fileUploadError =  document.getElementById("fileUpError");
+
+            let phoneNumber = document.getElementById("number").value;
+            let panNumber = document.getElementById("panCard").value;
+           
+
+            let panRegexPattern = /^([a-zA-z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+             
+            //////////////Phone number validation/////////////
+        if (isNaN(phoneNumber)) 
+        {
+                  
+                // Changing content and color of content
+                phoneError.textContent = "Please enter a valid number";
+                phoneError.style.color = "red";
+            }
+            else if (phoneNumber.length != 10) 
+        {                 
+                // Changing content and color of content
+                phoneError.textContent = "Max length allowed is 10";
+                phoneError.style.color = "red";
+            } else {
+                phoneError.textContent = "";
+            }           
+
+        //////PAN Valiation//////////////
+        if(panRegexPattern.test(panNumber))panError.textContent = "";
+        else {
+            panError.textContent = "Invalid PAN card number";
+            panError.style.color = "red";
+        }
+
+        for(i = 1; i<=5; i++)
+                {
+                    if(document.getElementById("resu_" + i).value == "")
+                    document.getElementById("resu_" + i).style.borderColor = "red";
+                    else document.getElementById("resu_" + i).style.borderColor = "black";
+                }
+
+        if(panError.textContent == "" && phoneError.textContent == "" && fileUploadError.textContent == "")
+            {
+                for(i = 1; i<=5; i++)
+                {
+                    if(document.getElementById("resu_" + i).value == "")
+                    break;
+                }
+                alert("Thank You!")
+                document.getElementById("submitResume").action = "/";
+                // $("#submitResume").modal('show');
+                //     {
+                //     modal:true,
+                //     width: "700",
+                //     title: "THANK YOU",
+                //     close:function(event, ui)
+                //     {
+
+                //     }
+                // });
+            }
+            },
+
+            ///File Upload////////////
+            uploadResume : function(e)
+            {
+                if(e.target.value.length == 0)document.getElementById("fileUpError").textContent = "Please upload a file";
+                 else document.getElementById("fileUpError").textContent = "";
+                //  let $input = document(`<input type="file" name="resumeUploaded" style="display:none"/>`);
+                //  $input.trigger('click');
+                //  $input.change(function(e){
+                //     // let data = new FormData();
+                //      console.log(e.target.files[0].name);
+                //  });
+            }
+
+
+          }
+
+        
+
+        
+    </script>
+    
+  </body>
+
+ 
+</html>
